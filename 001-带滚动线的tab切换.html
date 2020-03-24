@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul,
+        li {
+            list-style: none;
+        }
+
+        .container {
+            width: 500px;
+            height: 400px;
+            background-color: bisque;
+        }
+
+        ul.tab-title {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 50px;
+            border-bottom: 1px solid #f6f6f6;
+            position: relative;
+            /*相对定位*/
+        }
+
+        ul.tab-title li {
+            width: 100%;
+            text-align: center;
+        }
+
+        ul.tab-title .tab-line {
+            position: absolute;
+            /*绝对定位*/
+            left: 0;
+            height: 2px;
+            background-color: #158ef3;
+            top: 100%;
+            /* transition:transform .3s cubic-bezier(.645,.045,.355,1); */
+            transition:transform .3s ease;
+        }
+
+        .tab-content .content-item {
+            display: none;
+        }
+
+        .tab-content .content-item.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <ul class="tab-title">
+            <li>首页</li>
+            <li>博客</li>
+            <li>新闻</li>
+            <div class="tab-line"></div>
+        </ul>
+        <div class="tab-content">
+            <div class="content-item active">首页</div>
+            <div class="content-item">博客</div>
+            <div class="content-item">新闻</div>
+        </div>
+    </div>
+    <script>
+        var container = document.getElementById('container');
+        var titles = container.children[0];
+        var lis = titles.children;
+        var contents = container.children[1].children;
+        // 获取下方滚动的线条
+        var line = document.querySelector('.tab-line');
+        // 获取每一个的li的宽度
+        var liWidth = lis[0].offsetWidth;
+        line.style.width = liWidth + 'px';
+        for (var i = 0; i < lis.length; i++) {
+            // 注册事件
+            lis[i].index = i;  // 动态绑定属性
+            lis[i].onclick = function () {
+                line.style.transform = 'translateX(' + liWidth * this.index + 'px)';
+                itemChange(this.index);
+            }
+        }
+        function itemChange(index) {
+            for (var i = 0; i < contents.length; i++) {
+                // 排他思想
+                contents[i].className = 'content-item';
+            }
+            // 当前激活
+            contents[index].className += ' active';
+        }
+    </script>
+</body>
+
+</html>
